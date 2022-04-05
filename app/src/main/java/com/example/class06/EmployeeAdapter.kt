@@ -2,21 +2,19 @@ package com.example.class06
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.class06.databinding.EmployeeRowBinding
 
-class EmployeeAdapter: ListAdapter<Employee,EmployeeAdapter.EmployeeViewHolder>(EmployeeDiffUtil()) {
+class EmployeeAdapter(val callback: (Employee) -> Unit): ListAdapter<Employee,EmployeeAdapter.EmployeeViewHolder>(EmployeeDiffUtil()) {
 
     class EmployeeViewHolder(private val binding: EmployeeRowBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(employee: Employee){
             binding.emp = employee
         }
     }
-    // recycler view is called adapter view as well. few adapter views are list view, recycler view, grid view, spinner etc(adapter is used when it comes to collection of data)
-    // adapter generates a row/grid
-    // view that works with collection is called adapter view
 
     class EmployeeDiffUtil: DiffUtil.ItemCallback<Employee>(){
 
@@ -39,5 +37,13 @@ class EmployeeAdapter: ListAdapter<Employee,EmployeeAdapter.EmployeeViewHolder>(
     override fun onBindViewHolder(holder: EmployeeViewHolder, position: Int) {
         val employee = getItem(position)
         holder.bind(employee)
+        holder.itemView.setOnClickListener {
+            callback(employee)
+        }
     }
 }
+
+
+// recycler view is called adapter view as well. few adapter views are list view, recycler view, grid view, spinner etc(adapter is used when it comes to collection of data)
+// adapter generates a row/grid
+// view that works with collection is called adapter view
